@@ -1,28 +1,39 @@
 package slice
 
-import "sort"
+import (
+	"sort"
+)
 
-// AddUnique expected a sorted string slice.  It returns a new slice that contains
-// the unique value.
-func AddUnique(s []string, value string) []string {
+// AddUnique expects a sorted slice of strings.
+// It returns a new slice that contains the unique value.
+// If the value already exists in the slice, then an identical
+// slice is returned.
+func AddUnique(s []string, values ...string) []string {
 
-	index := sort.SearchStrings(s, value)
+	result := s
 
-	if index == len(s) {
-		return append(s, value)
+	for _, value := range values {
+
+		index := sort.SearchStrings(result, value)
+
+		if index == len(result) {
+			result = append(result, value)
+			continue
+		}
+
+		if result[index] == value {
+			continue
+		}
+
+		result = append(result[:index+1], result[index:]...)
+		result[index] = value
 	}
-
-	if s[index] == value {
-		return s
-	}
-
-	result := append(s[:index+1], s[index:]...)
-	result[index] = value
 
 	return result
 }
 
-// Remove removes a value from the []string
+// Remove expects a sorted slice of strings.  It removes
+// the designated value from the slice.
 func Remove(s []string, value string) []string {
 
 	index := sort.SearchStrings(s, value)

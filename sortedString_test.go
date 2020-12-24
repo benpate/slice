@@ -99,3 +99,27 @@ func TestAddRemove2(t *testing.T) {
 	s = Remove(s, "first")
 	require.Equal(t, []string{}, s)
 }
+
+func TestAddRemove3(t *testing.T) {
+
+	s := []string{}
+
+	s = AddUnique(s, "Hello", "There", "General", "Kenobi")
+	require.Equal(t, []string{"General", "Hello", "Kenobi", "There"}, s)
+}
+
+func TestIdentical(t *testing.T) {
+
+	{
+		a := []string{"one", "two", "three"}
+		b := []string{"one", "two", "three"}
+		c := []string{"one", "two"}
+		d := []string{"one", "three", "two"}
+		e := []string{"one", "two", "three", "four"}
+
+		require.True(t, Identical(a, b))
+		require.False(t, Identical(a, c))
+		require.False(t, Identical(a, d))
+		require.False(t, Identical(a, e))
+	}
+}
